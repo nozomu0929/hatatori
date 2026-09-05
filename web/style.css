@@ -1,0 +1,272 @@
+:root {
+  /*
+   * テーマカラー: 臙脂色 / サブ: 赤。地の色も無彩色ではなく僅かに赤へ寄せて馴染ませる。
+   * このデザインは暗色を基準にしているので、素の :root がダーク。
+   *
+   * 明暗の実際の値はここに一度だけ書き、割り当てだけを下で切り替える。
+   * 同じ色を2箇所に書くと、片方だけ直して食い違うため。
+   */
+  --d-bg: #0d0a0b;   --d-surface: #181315; --d-surface2: #221b1e;
+  --d-fg: #ece7e8;   --d-dim: #a09195;     --d-line: #2f262a;
+  --d-accent: #b94047; --d-accent2: #e03131; --d-accent-text: #e08d93;
+  --d-warn: #d9a441; --d-danger: #e35d5d;
+  --d-recon: #d98c94; --d-forensics: #c1555f; --d-crypto: #e0503f;
+  --d-stego: #d9a441; --d-rev: #8f2f3a; --d-osint: #b9647e; --d-geo: #a8734a;
+
+  --l-bg: #faf6f7;   --l-surface: #ffffff; --l-surface2: #f2ecee;
+  --l-fg: #1a1315;   --l-dim: #6b5a5e;     --l-line: #e4d9dc;
+  --l-accent: #9e2b36; --l-accent2: #cc2222; --l-accent-text: #9e2b36;
+  --l-warn: #a16207; --l-danger: #c0392b;
+  --l-recon: #a8515b; --l-forensics: #9e2b36; --l-crypto: #c0392b;
+  --l-stego: #a16207; --l-rev: #6d1f28; --l-osint: #8f3f57; --l-geo: #7a5230;
+
+  --bg: var(--d-bg); --surface: var(--d-surface); --surface2: var(--d-surface2);
+  --fg: var(--d-fg); --dim: var(--d-dim); --line: var(--d-line);
+  --accent: var(--d-accent); --accent2: var(--d-accent2); --accent-text: var(--d-accent-text);
+  --warn: var(--d-warn); --danger: var(--d-danger);
+  --recon: var(--d-recon); --forensics: var(--d-forensics); --crypto: var(--d-crypto);
+  --stego: var(--d-stego); --rev: var(--d-rev); --osint: var(--d-osint); --geo: var(--d-geo);
+  --radius: 12px;
+}
+
+/*
+ * 明るいテーマへの割り当て。
+ * 閲覧者のテーマ設定は3状態ある — 明示的に「ライト」「ダーク」を選んだ場合は
+ * ルート要素に data-theme が付き、既定の「システムに従う」では何も付かない。
+ * そのため OS の設定と、明示的な指定の両方を見る必要がある。
+ */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) { /* OSが明るい。ただし明示的にダークを選んでいれば従わない */
+    --bg: var(--l-bg); --surface: var(--l-surface); --surface2: var(--l-surface2);
+    --fg: var(--l-fg); --dim: var(--l-dim); --line: var(--l-line);
+    --accent: var(--l-accent); --accent2: var(--l-accent2); --accent-text: var(--l-accent-text);
+    --warn: var(--l-warn); --danger: var(--l-danger);
+    --recon: var(--l-recon); --forensics: var(--l-forensics); --crypto: var(--l-crypto);
+    --stego: var(--l-stego); --rev: var(--l-rev); --osint: var(--l-osint); --geo: var(--l-geo);
+  }
+}
+:root[data-theme="light"] { /* 明示的にライトを選んだ場合はOSの設定より優先する */
+  --bg: var(--l-bg); --surface: var(--l-surface); --surface2: var(--l-surface2);
+  --fg: var(--l-fg); --dim: var(--l-dim); --line: var(--l-line);
+  --accent: var(--l-accent); --accent2: var(--l-accent2); --accent-text: var(--l-accent-text);
+  --warn: var(--l-warn); --danger: var(--l-danger);
+  --recon: var(--l-recon); --forensics: var(--l-forensics); --crypto: var(--l-crypto);
+  --stego: var(--l-stego); --rev: var(--l-rev); --osint: var(--l-osint); --geo: var(--l-geo);
+}
+
+* { box-sizing: border-box; }
+/* .more など display を明示した要素では hidden 属性が効かなくなるため、明示的に打ち消す */
+[hidden] { display: none !important; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 15px/1.7 system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+main { max-width: 860px; margin: 0 auto; padding: 0 16px 64px; }
+
+/* --- ヘッダ --- */
+.top { max-width: 860px; margin: 0 auto; padding: 20px 16px 12px; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.logo { width: 30px; height: 30px; color: var(--fg); }
+h1 { font-size: 20px; margin: 0; letter-spacing: .04em; }
+.notice {
+  margin: 12px 0 20px; padding: 10px 14px; font-size: 13px; line-height: 1.6;
+  background: color-mix(in srgb, var(--warn) 12%, transparent);
+  border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; color: var(--fg);
+}
+.notice strong { color: var(--warn); }
+
+/* --- ドロップゾーン --- */
+.drop {
+  border: 2px dashed var(--line); border-radius: var(--radius); background: var(--surface);
+  padding: 40px 20px 20px; text-align: center; cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.drop:hover, .drop:focus-visible { border-color: var(--accent); outline: none; }
+.drop.over { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
+.drop-icon { font-size: 34px; color: var(--dim); line-height: 1; }
+.drop-title { font-size: 17px; font-weight: 600; margin: 12px 0 4px; }
+.drop-sub, .privacy { color: var(--dim); font-size: 13px; margin: 4px 0; }
+.privacy { margin-top: 16px; }
+.drop-opts { margin-top: 22px; display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.drop-opts label { font-size: 13px; color: var(--dim); }
+.drop-opts input {
+  background: var(--surface2); border: 1px solid var(--line); color: var(--fg);
+  border-radius: 8px; padding: 7px 10px; font-size: 13px; width: 240px; font-family: ui-monospace, monospace;
+}
+
+/* --- 状態表示 --- */
+.status { margin-top: 20px; padding: 16px; border-radius: var(--radius); background: var(--surface); color: var(--dim); }
+.status.err { color: var(--danger); }
+
+/* --- 結果 --- */
+.result { margin-top: 24px; }
+.result-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.result-head h2 { font-size: 17px; margin: 0; font-family: ui-monospace, monospace; word-break: break-all; }
+.dim { color: var(--dim); font-size: 13px; margin: 4px 0 0; }
+.modes { display: flex; gap: 4px; background: var(--surface2); padding: 3px; border-radius: 9px; }
+.modes button {
+  border: 0; background: none; color: var(--dim); font: inherit; font-size: 13px;
+  padding: 6px 14px; border-radius: 7px; cursor: pointer;
+}
+.modes button.on { background: var(--surface); color: var(--fg); font-weight: 600; }
+
+/* --- 答え（既定で伏せる） --- */
+.answer { margin-bottom: 20px; }
+.reveal {
+  width: 100%; padding: 14px; border-radius: var(--radius); cursor: pointer;
+  background: var(--surface); border: 1px solid var(--line); color: var(--dim);
+  font: inherit; font-size: 14px;
+}
+.reveal:hover { border-color: var(--accent); color: var(--fg); }
+.flag {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
+  border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px;
+}
+.flag code { font-family: ui-monospace, monospace; font-size: 15px; color: var(--accent-text); word-break: break-all; flex: 1; }
+.flag .meta { font-size: 12px; color: var(--dim); }
+.flag button { background: var(--surface2); border: 1px solid var(--line); color: var(--dim); border-radius: 6px; padding: 4px 10px; font: inherit; font-size: 12px; cursor: pointer; }
+
+/* --- 手順カード --- */
+.step { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--g); border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 16px; margin-bottom: 10px; }
+.step[data-genre=recon] { --g: var(--recon); }
+.step[data-genre=forensics] { --g: var(--forensics); }
+.step[data-genre=crypto] { --g: var(--crypto); }
+.step[data-genre=stego] { --g: var(--stego); }
+.step[data-genre=rev] { --g: var(--rev); }
+.step[data-genre=osint] { --g: var(--osint); }
+.step[data-genre=geo] { --g: var(--geo); }
+.step h3 { font-size: 15px; margin: 0 0 4px; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.step .num { color: var(--g); font-family: ui-monospace, monospace; font-size: 13px; }
+.step .conf { font-size: 11px; color: var(--dim); font-weight: 400; margin-left: auto; }
+.row { display: grid; grid-template-columns: 3.5em 1fr; gap: 4px 10px; margin-top: 8px; font-size: 14px; }
+.row dt { color: var(--dim); font-size: 12px; padding-top: 2px; }
+.row dd { margin: 0; white-space: pre-wrap; word-break: break-word; }
+.cmd {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 7px;
+  padding: 8px 10px; font-family: ui-monospace, monospace; font-size: 13px;
+  color: var(--accent-text); overflow-x: auto; white-space: pre;
+}
+.learn { background: var(--surface2); border-radius: 7px; padding: 8px 10px; font-size: 13px; color: var(--dim); margin-top: 8px; }
+.learn b { color: var(--warn); font-weight: 600; }
+
+/* --- ヒントモード --- */
+.hint { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
+.hint .label { color: var(--warn); font-size: 12px; font-weight: 600; }
+.hint p { margin: 6px 0 0; }
+.more { display: block; width: 100%; margin-top: 6px; padding: 12px; border-radius: var(--radius); cursor: pointer; background: var(--surface2); border: 1px dashed var(--line); color: var(--dim); font: inherit; font-size: 14px; }
+.more:hover { border-color: var(--accent); color: var(--fg); }
+.done { text-align: center; color: var(--dim); font-size: 13px; padding: 12px; }
+
+/* --- 構造ツリー --- */
+.tree { font-family: ui-monospace, monospace; font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; overflow-x: auto; }
+.tree div { white-space: pre; }
+.tree .k { color: var(--dim); }
+.tree .n { color: var(--crypto); }
+
+@media (max-width: 560px) {
+  .result-head { align-items: stretch; }
+  .modes { width: 100%; }
+  .modes button { flex: 1; }
+  .row { grid-template-columns: 1fr; gap: 2px; }
+  .row dt { padding-top: 6px; }
+}
+
+/* ══════════ タブ ══════════ */
+.tabs { display: flex; gap: 4px; background: var(--surface2); padding: 3px; border-radius: 10px; margin-top: 16px; }
+.tabs button {
+  flex: 1; border: 0; background: none; color: var(--dim); font: inherit; font-size: 14px;
+  padding: 9px 14px; border-radius: 8px; cursor: pointer;
+}
+.tabs button.on { background: var(--surface); color: var(--fg); font-weight: 600; }
+
+/* ══════════ 進捗 ══════════ */
+.progress-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 24px; }
+.progress-num { font-size: 26px; font-weight: 700; font-family: ui-monospace, monospace; }
+.bar { height: 6px; background: var(--surface2); border-radius: 3px; margin-top: 12px; overflow: hidden; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 3px; transition: width .4s ease; }
+.linkish { background: none; border: 0; color: var(--dim); font: inherit; font-size: 12px; cursor: pointer; padding: 8px 0 0; text-decoration: underline; }
+.linkish:hover { color: var(--danger); }
+
+/* ══════════ スキル一覧 ══════════ */
+.level-head { font-size: 13px; color: var(--dim); font-weight: 600; margin: 24px 0 10px; letter-spacing: .06em; }
+.skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+.skill-card {
+  text-align: left; font: inherit; color: var(--fg); cursor: pointer;
+  background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--g, var(--line));
+  border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 6px; transition: border-color .15s, transform .1s;
+}
+.skill-card[data-genre=recon] { --g: var(--recon); }
+.skill-card[data-genre=forensics] { --g: var(--forensics); }
+.skill-card[data-genre=crypto] { --g: var(--crypto); }
+.skill-card[data-genre=stego] { --g: var(--stego); }
+.skill-card[data-genre=rev] { --g: var(--rev); }
+.skill-card[data-genre=osint] { --g: var(--osint); }
+.skill-card[data-genre=geo] { --g: var(--geo); }
+.skill-card[data-genre=misc] { --g: var(--dim); }
+.skill-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+.skill-card.locked, .skill-card.planned { opacity: .55; }
+.skill-card.solved { background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
+.skill-title { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+.check { color: var(--accent-text); font-size: 13px; }
+.skill-sum { font-size: 13px; color: var(--dim); line-height: 1.6; }
+.skill-foot { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 11px; margin-top: auto; padding-top: 4px; }
+.genre-tag { background: var(--surface2); color: var(--g, var(--dim)); padding: 2px 7px; border-radius: 5px; font-family: ui-monospace, monospace; font-size: 11px; }
+
+/* ══════════ スキル詳細 ══════════ */
+.back { background: none; border: 0; color: var(--dim); font: inherit; font-size: 13px; cursor: pointer; padding: 0 0 16px; }
+.back:hover { color: var(--accent); }
+.skill-head { display: flex; gap: 10px; align-items: center; }
+.skill-h { font-size: 22px; margin: 8px 0 4px; }
+.skill-sum-lg { color: var(--dim); margin: 0 0 20px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 12px; }
+.panel h4 { margin: 0 0 10px; font-size: 13px; color: var(--dim); letter-spacing: .06em; }
+.panel p { margin: 0 0 8px; }
+.cmd-what { font-size: 13px; color: var(--dim); margin: 4px 0 12px; }
+.pitfalls { margin: 0; padding-left: 20px; }
+.pitfalls li { margin-bottom: 8px; font-size: 14px; }
+
+/* ══════════ 問題 ══════════ */
+.gen-btn {
+  display: flex; width: 100%; align-items: center; gap: 12px; text-align: left;
+  background: var(--surface2); border: 1px solid var(--line); border-radius: 9px;
+  padding: 12px 14px; margin-top: 8px; font: inherit; color: var(--fg); cursor: pointer;
+}
+.gen-btn:hover { border-color: var(--accent); }
+.gen-title { font-weight: 600; font-size: 14px; }
+.gen-btn .dim, .diff { margin-left: auto; font-size: 12px; color: var(--dim); }
+.diff { color: var(--warn); letter-spacing: 1px; }
+.primary {
+  background: var(--accent); color: #fff; border: 0; border-radius: 9px;
+  padding: 12px 18px; font: inherit; font-weight: 600; cursor: pointer;
+}
+.primary:hover { filter: brightness(1.1); }
+.answer-form { display: flex; gap: 8px; margin: 20px 0 8px; flex-wrap: wrap; }
+.flag-input {
+  flex: 1; min-width: 220px; background: var(--surface); border: 1px solid var(--line); color: var(--fg);
+  border-radius: 9px; padding: 12px 14px; font-family: ui-monospace, monospace; font-size: 14px;
+}
+.flag-input:focus { outline: none; border-color: var(--accent); }
+.verdict { font-size: 14px; padding: 4px 0 12px; min-height: 1.4em; }
+.verdict.ok { color: var(--accent-text); font-weight: 600; }
+.verdict.ng { color: var(--warn); }
+.solved-box { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); background: color-mix(in srgb, var(--accent) 7%, var(--surface)); margin-top: 20px; }
+
+@media (max-width: 560px) {
+  .skill-grid { grid-template-columns: 1fr; }
+  .answer-form { flex-direction: column; }
+  .primary { width: 100%; }
+}
+
+/* ══════════ 手順に添える画像（ビット面など） ══════════ */
+.attach { margin: 12px 0 0; }
+.attach img {
+  display: block; max-width: 100%; width: 100%;
+  background: #fff; border: 1px solid var(--line); border-radius: 8px;
+  /* ビット面は1画素単位の模様なので、拡大時にぼかさない */
+  image-rendering: pixelated;
+}
+.attach figcaption { font-size: 12px; color: var(--dim); margin-top: 6px; }

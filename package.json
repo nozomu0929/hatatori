@@ -1,0 +1,28 @@
+{
+  "name": "hatatori",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "CTF学習支援ツール — 終了済み問題の復習と、解法プロセスの学習のために",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "solve": "node --experimental-strip-types src/cli/hatatori.ts",
+    "verify": "node --experimental-strip-types src/cli/hatatori.ts --verify",
+    "samples": "node --experimental-strip-types samples/build.ts",
+    "challenge": "node --experimental-strip-types src/cli/challenge.ts",
+    "curriculum": "node --experimental-strip-types src/curriculum/validate.ts",
+    "icons": "node --experimental-strip-types scripts/make-icons.ts",
+    "standalone": "vite build && node --experimental-strip-types scripts/build-standalone.ts"
+  },
+  "engines": {
+    "node": ">=22.6"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  }
+}
