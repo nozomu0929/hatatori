@@ -15,7 +15,8 @@
     "challenge": "node --experimental-strip-types src/cli/challenge.ts",
     "curriculum": "node --experimental-strip-types src/curriculum/validate.ts",
     "icons": "node --experimental-strip-types scripts/make-icons.ts",
-    "standalone": "vite build && node --experimental-strip-types scripts/build-standalone.ts"
+    "standalone": "vite build && node --experimental-strip-types scripts/build-standalone.ts",
+    "deploy": "bash scripts/deploy.sh"
   },
   "engines": {
     "node": ">=22.6"
@@ -24,5 +25,6 @@
     "@types/node": "^26.4.1",
     "typescript": "^7.0.2",
     "vite": "^8.2.2"
-  }
+  },
+  "homepage": "https://nozomu0929.github.io/hatatori/"
 }
