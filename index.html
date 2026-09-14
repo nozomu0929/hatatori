@@ -9,8 +9,8 @@
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
 <link rel="icon" href="./favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
-  <script type="module" crossorigin src="./assets/index-Dvq5XE2d.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-D0eI17oU.css">
+  <script type="module" crossorigin src="./assets/index-BXxFXX5T.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-LUTb1eLm.css">
 </head>
 <body>
 <header class="top">
@@ -48,8 +48,23 @@
         <input type="file" id="file" hidden>
       </div>
       <div class="drop-opts">
-        <label for="format">フラグ書式（任意）</label>
-        <input type="text" id="format" placeholder="例: hatatoriCTF{}  空欄なら自動判別" autocomplete="off" spellcheck="false">
+        <div class="opt">
+          <label for="genre">ジャンルの見当</label>
+          <select id="genre">
+            <option value="">分からない（自動）</option>
+            <option value="crypto">Crypto</option>
+            <option value="forensics">Forensics</option>
+            <option value="stego">Stego</option>
+            <option value="rev">Rev</option>
+            <option value="osint">OSINT</option>
+            <option value="geo">Geo</option>
+          </select>
+        </div>
+        <div class="opt">
+          <label for="format">フラグ書式（任意）</label>
+          <input type="text" id="format" placeholder="例: hatatoriCTF{}  空欄なら自動判別" autocomplete="off" spellcheck="false">
+        </div>
+        <p id="genre-note" class="dim opt-note"></p>
       </div>
       <p class="privacy">解析は端末内で完結します。ファイルはどこにも送信されません。</p>
     </div>
